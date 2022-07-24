@@ -1,0 +1,31 @@
+name: build carbon
+on: [workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # https://github.com/marketplace/actions/setup-python
+      - name: get python
+        uses: actions/setup-python@v4
+      # https://github.com/marketplace/actions/setup-bazelisk
+      - name: install bazelisk
+        uses: bazelbuild/setup-bazelisk@v2
+      # https://github.com/marketplace/actions/install-llvm-and-clang
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "10.0"
+      - name: build lol
+        run: |
+          bazel build //explorer
+          ls
+          ls bazel-bin || true
+          ls bazel-bin/explorer || true
+          ls bazel-bin/explorer/explorer || true
+      - name: do the thing
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: explorer
+          path: bazel-bin/explorer/explorer
