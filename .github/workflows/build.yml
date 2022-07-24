@@ -9,6 +9,8 @@ jobs:
       # https://github.com/marketplace/actions/setup-python
       - name: get python
         uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
       # https://github.com/marketplace/actions/setup-bazelisk
       - name: install bazelisk
         uses: bazelbuild/setup-bazelisk@v2
@@ -25,7 +27,8 @@ jobs:
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1
         with:
-          version: "10.0"
+          version: "14.0"
+          cached: ${{ steps.cache-llvm.outputs.cache-hit }}
       - name: build lol
         run: |
           bazel build //explorer
