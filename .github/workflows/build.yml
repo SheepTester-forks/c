@@ -13,13 +13,14 @@ jobs:
       - name: install bazelisk
         uses: bazelbuild/setup-bazelisk@v2
       # https://github.com/marketplace/actions/install-llvm-and-clang
-      - name: Cache LLVM and Clang
+      - name: Cache LLVM and Clang, Mount bazel cache
         id: cache-llvm
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             C:/Program Files/LLVM
             ./llvm
+            ~/.cache/bazel
           key: llvm-3.5
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1
